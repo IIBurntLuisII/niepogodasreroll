@@ -1,0 +1,107 @@
+2024-06-20 14:28:12,448 - INFO - Config loaded: {'minimum_chests': {'quest1': 30, 'quest2': 30, 'quest3': 30, 'quest4': 45}, 'delay': 0.2, 'start_keybind': 'F2', 'kill_keybind': 'F3'}
+2024-06-20 14:28:12,448 - INFO - Regions loaded: {'regions': {'quest1': [938, 350, 1086, 401], 'quest2': [940, 446, 1082, 496], 'quest3': [941, 545, 1084, 594], 'quest4': [938, 642, 1082, 694]}, 'buttons': {'reroll1': [805, 398], 'reroll2': [804, 493], 'reroll3': [803, 594], 'reroll4': [801, 685]}}
+2024-06-20 14:28:13,449 - INFO -  > niepogoda's reroll script < 
+2024-06-20 14:28:13,450 - INFO - Script loaded! Press F2 to start rerolling. Press F3 to exit.
+2024-06-20 14:28:24,626 - INFO - Successfully read quest 1 content: [30] Artifact Chest
+[58] Diamond Chest
+
+2024-06-20 14:28:24,628 - INFO - Filtered result for quest 1: ['30']
+2024-06-20 14:28:24,628 - INFO - Found 30 artifact chests in quest 1
+2024-06-20 14:28:24,628 - INFO - Quest 1 has enough chests: 30
+2024-06-20 14:28:24,978 - INFO - Successfully read quest 2 content: [30] Artifact Chest
+[58] Diamond Chest
+
+2024-06-20 14:28:24,979 - INFO - Filtered result for quest 2: ['30']
+2024-06-20 14:28:24,979 - INFO - Found 30 artifact chests in quest 2
+2024-06-20 14:28:24,979 - INFO - Quest 2 has enough chests: 30
+2024-06-20 14:28:25,342 - INFO - Successfully read quest 3 content: [88] Diamond Chest
+
+2024-06-20 14:28:25,343 - INFO - Filtered result for quest 3: ['0']
+2024-06-20 14:28:25,343 - INFO - Found 0 artifact chests in quest 3
+2024-06-20 14:28:25,653 - INFO - Rerolling chest 3... Waiting for contents to refresh...
+2024-06-20 14:28:26,207 - INFO - Successfully read quest 3 content: [88] Diamond Chest
+
+2024-06-20 14:28:26,208 - INFO - Filtered result for quest 3: ['0']
+2024-06-20 14:28:26,208 - INFO - Found 0 artifact chests in quest 3
+2024-06-20 14:28:26,514 - INFO - Rerolling chest 3... Waiting for contents to refresh...
+2024-06-20 14:28:27,099 - INFO - Successfully read quest 3 content: [20] Artifact Chest
+[69] Diamond Chest
+
+2024-06-20 14:28:27,099 - INFO - Filtered result for quest 3: ['20']
+2024-06-20 14:28:27,100 - INFO - Found 20 artifact chests in quest 3
+2024-06-20 14:28:27,405 - INFO - Rerolling chest 3... Waiting for contents to refresh...
+2024-06-20 14:28:27,964 - INFO - Successfully read quest 3 content: [88] Diamond Chest
+
+2024-06-20 14:28:27,964 - INFO - Filtered result for quest 3: ['0']
+2024-06-20 14:28:27,966 - INFO - Found 0 artifact chests in quest 3
+2024-06-20 14:28:28,272 - INFO - Rerolling chest 3... Waiting for contents to refresh...
+2024-06-20 14:28:28,838 - INFO - Successfully read quest 3 content: [23] Artifact Chest
+[65] Diamond Chest
+
+2024-06-20 14:28:28,839 - INFO - Filtered result for quest 3: ['23']
+2024-06-20 14:28:28,840 - INFO - Found 23 artifact chests in quest 3
+2024-06-20 14:28:29,148 - INFO - Rerolling chest 3... Waiting for contents to refresh...
+2024-06-20 14:28:29,707 - INFO - Successfully read quest 3 content: [88] Diamond Chest
+
+2024-06-20 14:28:29,708 - INFO - Filtered result for quest 3: ['0']
+2024-06-20 14:28:29,709 - INFO - Found 0 artifact chests in quest 3
+2024-06-20 14:28:30,022 - INFO - Rerolling chest 3... Waiting for contents to refresh...
+2024-06-20 14:28:30,588 - INFO - Successfully read quest 3 content: [88] Diamond Chest
+
+2024-06-20 14:28:30,588 - INFO - Filtered result for quest 3: ['0']
+2024-06-20 14:28:30,589 - INFO - Found 0 artifact chests in quest 3
+2024-06-20 14:28:30,898 - INFO - Rerolling chest 3... Waiting for contents to refresh...
+2024-06-20 14:28:31,468 - INFO - Successfully read quest 3 content: [20] Artifact Chest
+[69] Diamond Chest
+
+2024-06-20 14:28:31,468 - INFO - Filtered result for quest 3: ['20']
+2024-06-20 14:28:31,469 - INFO - Found 20 artifact chests in quest 3
+2024-06-20 14:28:31,781 - INFO - Rerolling chest 3... Waiting for contents to refresh...
+2024-06-20 14:28:32,364 - INFO - Successfully read quest 3 content: [30] Artifact Chest
+[58] Diamond Chest
+
+2024-06-20 14:28:32,364 - INFO - Filtered result for quest 3: ['30']
+2024-06-20 14:28:32,365 - INFO - Found 30 artifact chests in quest 3
+2024-06-20 14:28:32,366 - INFO - Quest 3 has enough chests: 30
+2024-06-20 14:28:32,745 - INFO - Successfully read quest 4 content: [20] Diamond Chest
+
+2024-06-20 14:28:32,746 - INFO - Filtered result for quest 4: ['20']
+2024-06-20 14:28:32,748 - INFO - Found 20 artifact chests in quest 4
+2024-06-20 14:28:33,055 - INFO - Rerolling chest 4... Waiting for contents to refresh...
+2024-06-20 14:28:33,611 - INFO - Successfully read quest 4 content: [20] Diamond Chest
+
+2024-06-20 14:28:33,611 - INFO - Filtered result for quest 4: ['20']
+2024-06-20 14:28:33,612 - INFO - Found 20 artifact chests in quest 4
+2024-06-20 14:28:33,923 - INFO - Rerolling chest 4... Waiting for contents to refresh...
+2024-06-20 14:28:34,483 - INFO - Successfully read quest 4 content: [20] Diamond Chest
+
+2024-06-20 14:28:34,484 - INFO - Filtered result for quest 4: ['20']
+2024-06-20 14:28:34,485 - INFO - Found 20 artifact chests in quest 4
+2024-06-20 14:28:34,798 - INFO - Rerolling chest 4... Waiting for contents to refresh...
+2024-06-20 14:28:35,348 - INFO - Successfully read quest 4 content: [20] Diamond Chest
+
+2024-06-20 14:28:35,348 - INFO - Filtered result for quest 4: ['20']
+2024-06-20 14:28:35,349 - INFO - Found 20 artifact chests in quest 4
+2024-06-20 14:28:35,655 - INFO - Rerolling chest 4... Waiting for contents to refresh...
+2024-06-20 14:28:36,217 - INFO - Successfully read quest 4 content: [20] Diamond Chest
+
+2024-06-20 14:28:36,217 - INFO - Filtered result for quest 4: ['20']
+2024-06-20 14:28:36,218 - INFO - Found 20 artifact chests in quest 4
+2024-06-20 14:28:36,530 - INFO - Rerolling chest 4... Waiting for contents to refresh...
+2024-06-20 14:28:37,086 - INFO - Successfully read quest 4 content: [20] Diamond Chest
+
+2024-06-20 14:28:37,086 - INFO - Filtered result for quest 4: ['20']
+2024-06-20 14:28:37,088 - INFO - Found 20 artifact chests in quest 4
+2024-06-20 14:28:37,397 - INFO - Rerolling chest 4... Waiting for contents to refresh...
+2024-06-20 14:28:37,953 - INFO - Successfully read quest 4 content: [20] Diamond Chest
+
+2024-06-20 14:28:37,954 - INFO - Filtered result for quest 4: ['20']
+2024-06-20 14:28:37,956 - INFO - Found 20 artifact chests in quest 4
+2024-06-20 14:28:38,266 - INFO - Rerolling chest 4... Waiting for contents to refresh...
+2024-06-20 14:28:38,821 - INFO - Successfully read quest 4 content: [20] Diamond Chest
+
+2024-06-20 14:28:38,822 - INFO - Filtered result for quest 4: ['20']
+2024-06-20 14:28:38,824 - INFO - Found 20 artifact chests in quest 4
+2024-06-20 14:28:39,130 - INFO - Rerolling chest 4... Waiting for contents to refresh...
+2024-06-20 14:28:39,365 - INFO - Cleaning up temporary files...
+2024-06-20 14:28:39,367 - INFO - Exiting...
