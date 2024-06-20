@@ -7,7 +7,7 @@ class RegionSelector:
     def __init__(self, root):
         self.root = root
         self.root.title("Select Screen Regions")
-        self.root.geometry("300x700")
+        self.root.geometry("300x440")
         self.root.resizable(False, False)
 
         self.regions = {}
@@ -25,9 +25,6 @@ class RegionSelector:
         self.create_selection_button("Select Quest 3 Region", "quest3")
         self.quest3_label = self.create_label("Empty")
 
-        self.create_selection_button("Select Quest 4 Region", "quest4")
-        self.quest4_label = self.create_label("Empty")
-
         self.create_selection_button("Select Reroll Button 1 Position", "reroll1")
         self.reroll1_label = self.create_label("Empty")
 
@@ -36,9 +33,6 @@ class RegionSelector:
 
         self.create_selection_button("Select Reroll Button 3 Position", "reroll3")
         self.reroll3_label = self.create_label("Empty")
-
-        self.create_selection_button("Select Reroll Button 4 Position", "reroll4")
-        self.reroll4_label = self.create_label("Empty")
 
         self.save_btn = tk.Button(root, text="Save Regions and Buttons", command=self.save_regions, font=("Calibri", 12), bg="violet", fg="white", bd=0)
         self.save_btn.pack(pady=20)
@@ -131,16 +125,12 @@ class RegionSelector:
             self.quest2_label.config(text=coord_text)
         elif name == "quest3":
             self.quest3_label.config(text=coord_text)
-        elif name == "quest4":
-            self.quest4_label.config(text=coord_text)
         elif name == "reroll1":
             self.reroll1_label.config(text=coord_text)
         elif name == "reroll2":
             self.reroll2_label.config(text=coord_text)
         elif name == "reroll3":
             self.reroll3_label.config(text=coord_text)
-        elif name == "reroll4":
-            self.reroll4_label.config(text=coord_text)
 
     def save_regions(self):
         with open("regions.json", "w") as file:

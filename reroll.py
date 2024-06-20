@@ -1,4 +1,5 @@
-import pytesseract
+import ctypes
+import easyocr
 import re
 import time
 import threading
@@ -23,9 +24,10 @@ file_handler = logging.FileHandler(log_filename)
 file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 logging.getLogger().addHandler(file_handler)
 
-# Configure pytesseract
-# Comment out the line below if tesseract is in the PATH
-# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# Initialize EasyOCR
+logging.info("Initializing EasyOCR...")
+reader = easyocr.Reader(['en'])
+logging.info("EasyOCR initialization successful!")
 
 # Load configuration
 try:
@@ -48,6 +50,7 @@ except json.JSONDecodeError as e:
     logging.error(f"Error decoding regions.json: {e}")
     exit()
 
+MINIMUM_CHESTS = config["minimum_chests"]
 DELAY = config["delay"]
 START_KEYBIND = config["start_keybind"]
 KILL_KEYBIND = config["kill_keybind"]
@@ -61,8 +64,7 @@ def getChests(quest_number):
     bbox_map = {
         1: (regions["regions"]["quest1"]),
         2: (regions["regions"]["quest2"]),
-        3: (regions["regions"]["quest3"]),
-        4: (regions["regions"]["quest4"])
+        3: (regions["regions"]["quest3"])
     }
     if quest_number not in bbox_map:
         return ["0"]
@@ -78,31 +80,22 @@ def getChests(quest_number):
     cv2.imwrite(filename, thresh)
 
     try:
-        OCR_result = pytesseract.image_to_string(thresh)
+        OCR_result = reader.readtext(filename, detail=0, width_ths=1, text_threshold=0.6)
         logging.info(f"Successfully read quest {quest_number} content: {OCR_result}")
-        if quest_number in [1, 2, 3]:
-            filtered = [re.search(r'(\d+)', item).group(1) for item in OCR_result.split('\n') if "artifact chest" in item.lower()]
-        elif quest_number == 4:
-            filtered = [re.search(r'(\d+)', item).group(1) for item in OCR_result.split('\n') if "diamond chest" in item.lower()]
-        else:
-            filtered = ["0"]
+        filtered = [re.search(r'\d+', item).group() for item in OCR_result if "Chest" in item]
     except Exception as e:
         logging.error(f"Error reading quest {quest_number} content: {e}")
         filtered = ["0"]
 
-    if not filtered:
-        filtered = ["0"]
-        
-    logging.info(f"Filtered result for quest {quest_number}: {filtered}")
-    logging.info(f"Found {filtered[0]} artifact chests in quest {quest_number}")
+    filtered = filtered if filtered else ["0"]
+    logging.info(f"Found {filtered[0]} chests in quest {quest_number}")
     return filtered
 
 def reroll(quest_number):
     coordinates = {
         1: (regions["buttons"]["reroll1"]),
         2: (regions["buttons"]["reroll2"]),
-        3: (regions["buttons"]["reroll3"]),
-        4: (regions["buttons"]["reroll4"])
+        3: (regions["buttons"]["reroll3"])
     }
     if quest_number not in coordinates:
         return
@@ -121,12 +114,8 @@ def main_loop():
         time.sleep(0.001)
         if keyboard.is_pressed(START_KEYBIND):
             time.sleep(0.2)
-            for quest_number in range(1, 5):  # Changed range to include quest 4
-                while True:
-                    chest_count = int(getChests(quest_number)[0])
-                    if chest_count >= config["minimum_chests"][f"quest{quest_number}"]:
-                        logging.info(f"Quest {quest_number} has enough chests: {chest_count}")
-                        break
+            for quest_number in range(1, 4):
+                while int(getChests(quest_number)[0]) < MINIMUM_CHESTS:
                     reroll(quest_number)
                     time.sleep(DELAY)
 
@@ -143,7 +132,6 @@ def cleanup():
         os.remove("quest1.png")
         os.remove("quest2.png")
         os.remove("quest3.png")
-        os.remove("quest4.png")
     except FileNotFoundError:
         pass
     logging.info("Exiting...")
