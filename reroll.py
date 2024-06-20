@@ -1,4 +1,3 @@
-import ctypes
 import pytesseract
 import re
 import time
