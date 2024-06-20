@@ -1,5 +1,10 @@
 {
-    "minimum_chests": 20,
+    "minimum_chests": {
+        "quest1": 30,
+        "quest2": 30,
+        "quest3": 30,
+        "quest4": 45
+    },
     "delay": 0.2,
     "start_keybind": "F2",
     "kill_keybind": "F3"
