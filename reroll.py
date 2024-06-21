@@ -125,13 +125,20 @@ def main_loop():
                     else:
                         logging.info(f"Quest {quest_number} region not defined. Skipping.")
                     continue
+                
                 while True:
-                    chest_count = int(getChests(quest_number)[0])
+                    chest_counts = getChests(quest_number)
+                    if quest_number == 4 and chest_counts[0] == "0":
+                        logging.info("No text detected for quest 4, stopping reroll attempts.")
+                        break
+                    if quest_number == 4 and not any(c.isdigit() for c in chest_counts[0]):
+                        logging.info("No text detected at all for quest 4, stopping reroll attempts.")
+                        break
+                    if not chest_counts[0].isdigit():
+                        break
+                    chest_count = int(chest_counts[0])
                     if chest_count >= config["minimum_chests"][f"quest{quest_number}"]:
                         logging.info(f"Quest {quest_number} has enough chests: {chest_count}")
-                        break
-                    if quest_number == 4 and not getChests(quest_number)[0].isdigit():
-                        logging.info("No text detected for quest 4, stopping reroll attempts.")
                         break
                     reroll(quest_number)
                     time.sleep(DELAY)
