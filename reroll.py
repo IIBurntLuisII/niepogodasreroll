@@ -63,9 +63,9 @@ def getChests(quest_number):
         1: (regions["regions"]["quest1"]),
         2: (regions["regions"]["quest2"]),
         3: (regions["regions"]["quest3"]),
-        4: (regions["regions"]["quest4"])
+        4: (regions["regions"]["quest4"]) if "quest4" in regions["regions"] else None
     }
-    if quest_number not in bbox_map:
+    if quest_number not in bbox_map or not bbox_map[quest_number]:
         return ["0"]
     
     bbox = bbox_map[quest_number]
@@ -81,12 +81,8 @@ def getChests(quest_number):
     try:
         OCR_result = pytesseract.image_to_string(thresh)
         logging.info(f"Successfully read quest {quest_number} content: {OCR_result}")
-        if quest_number in [1, 2, 3]:
-            filtered = [re.search(r'(\d+)', item).group(1) for item in OCR_result.split('\n') if "artifact chest" in item.lower()]
-        elif quest_number == 4:
-            filtered = [re.search(r'(\d+)', item).group(1) for item in OCR_result.split('\n') if "diamond chest" in item.lower()]
-        else:
-            filtered = ["0"]
+        chest_type = config["chest_type"][f"quest{quest_number}"]
+        filtered = [re.search(r'(\d+)', item).group(1) for item in OCR_result.split('\n') if chest_type.lower() in item.lower()]
     except Exception as e:
         logging.error(f"Error reading quest {quest_number} content: {e}")
         filtered = ["0"]
@@ -95,7 +91,7 @@ def getChests(quest_number):
         filtered = ["0"]
         
     logging.info(f"Filtered result for quest {quest_number}: {filtered}")
-    logging.info(f"Found {filtered[0]} artifact chests in quest {quest_number}")
+    logging.info(f"Found {filtered[0]} {config['chest_type'][f'quest{quest_number}']} in quest {quest_number}")
     return filtered
 
 def reroll(quest_number):
@@ -103,9 +99,9 @@ def reroll(quest_number):
         1: (regions["buttons"]["reroll1"]),
         2: (regions["buttons"]["reroll2"]),
         3: (regions["buttons"]["reroll3"]),
-        4: (regions["buttons"]["reroll4"])
+        4: (regions["buttons"]["reroll4"]) if "reroll4" in regions["buttons"] else None
     }
-    if quest_number not in coordinates:
+    if quest_number not in coordinates or not coordinates[quest_number]:
         return
     
     x, y = coordinates[quest_number]
@@ -122,11 +118,20 @@ def main_loop():
         time.sleep(0.001)
         if keyboard.is_pressed(START_KEYBIND):
             time.sleep(0.2)
-            for quest_number in range(1, 5):  # Changed range to include quest 4
+            for quest_number in range(1, 5):
+                if not regions["regions"].get(f"quest{quest_number}"):
+                    if quest_number == 4:
+                        logging.info("No fourth Quest Selected")
+                    else:
+                        logging.info(f"Quest {quest_number} region not defined. Skipping.")
+                    continue
                 while True:
                     chest_count = int(getChests(quest_number)[0])
                     if chest_count >= config["minimum_chests"][f"quest{quest_number}"]:
                         logging.info(f"Quest {quest_number} has enough chests: {chest_count}")
+                        break
+                    if quest_number == 4 and not getChests(quest_number)[0].isdigit():
+                        logging.info("No text detected for quest 4, stopping reroll attempts.")
                         break
                     reroll(quest_number)
                     time.sleep(DELAY)
