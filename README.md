@@ -68,10 +68,6 @@ Want a new feature? [open an issue](https://github.com/0e8/niepogodasreroll/issu
 # TODO
    - script pause
    - gui/tui
-   - detect no string on quest 4 (worked on by lmmortalz)
    - .exe file, so people that doesnt know how to use computer and chatgpt can run this thing
 
 Remember that contributes are welcome :)
-
-# Known issues
-   - Script tries to reroll quest 4 even if the quest doesn't exist (current fix is to kill the script while it tries to reroll quest 4)
