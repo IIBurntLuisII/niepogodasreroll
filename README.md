@@ -67,6 +67,7 @@ Thanks to **lmmortalz** that contributed ALOT to this project.
    - script pause
    - gui/tui
    - detect no string on quest 4 (worked on by lmmortalz)
+   - .exe file, so people that doesnt know how to use computer and chatgpt can run this thing
 
 Remember that contributes are welcome :)
 
