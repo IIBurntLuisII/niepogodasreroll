@@ -61,6 +61,8 @@ For further assistance, [open an issue](https://github.com/0e8/niepogodasreroll/
 Much love to all of the people that helped me with this script.  
 Thanks to **lmmortalz** that contributed ALOT to this project.
 
+Want a new feature? [open an issue](https://github.com/0e8/niepogodasreroll/issues)!
+
 ---
 
 # TODO
