@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pylint
+          pip install pylint keyboard numpy opencv-python packaging pillow PyDirectInput pytesseract
 
       - name: Analysing the code with pylint
         run: |
