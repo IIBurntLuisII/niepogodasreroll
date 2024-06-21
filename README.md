@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ALL CREDIT GOES TO - niepogoda
 
 
@@ -95,11 +94,6 @@ Before using this script, ensure you have the following installed:
    - Run `py regions.py`. This script allows you to select specific regions on your screen where quests and reroll buttons are located.
    - Follow the on-screen instructions to select regions for Quests 1, 2, 3, and their respective reroll buttons.
    - Save the regions when prompted. This will generate a `regions.json` file that `reroll.py` will use.
-
-   **How to select those areas?** <br>
-   <img src="./img/questarea.png"> <br>
-   <img src="./img/buttonarea.png"> <br>
->>>>>>> niepogodasrerollTesseract/main
 
    **Make sure to leave some margins around the text and to not get the *Kill Quest* label in the area!**
 
