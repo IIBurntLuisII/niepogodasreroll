@@ -60,3 +60,15 @@ For further assistance, [open an issue](https://github.com/0e8/niepogodasreroll/
 ## Notes
 Much love to all of the people that helped me with this script.  
 Thanks to **lmmortalz** that contributed ALOT to this project.
+
+---
+
+# TODO
+   - script pause
+   - gui/tui
+   - detect no string on quest 4 (worked on by lmmortalz)
+
+Remember that contributes are welcome :)
+
+# Known issues
+   - Script tries to reroll quest 4 even if the quest doesn't exist (current fix is to kill the script while it tries to reroll quest 4)
