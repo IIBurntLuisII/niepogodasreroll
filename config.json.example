@@ -1,0 +1,17 @@
+{
+    "minimum_chests": {
+        "quest1": 1,
+        "quest2": 1,
+        "quest3": 1,
+        "quest4": 10
+    },
+    "chest_type": {
+        "quest1": "diamond chest",
+        "quest2": "diamond chest",
+        "quest3": "diamond chest",
+        "quest4": "platinum chest"
+    },
+    "delay": 0.2,
+    "start_keybind": "F2",
+    "kill_keybind": "F3"
+}
