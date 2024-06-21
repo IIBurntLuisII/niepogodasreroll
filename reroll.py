@@ -1,5 +1,5 @@
 import ctypes
-import easyocr
+import pytesseract
 import re
 import time
 import threading
@@ -24,10 +24,9 @@ file_handler = logging.FileHandler(log_filename)
 file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 logging.getLogger().addHandler(file_handler)
 
-# Initialize EasyOCR
-logging.info("Initializing EasyOCR...")
-reader = easyocr.Reader(['en'])
-logging.info("EasyOCR initialization successful!")
+# Configure pytesseract
+# Comment out the line below if tesseract is in the PATH
+# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 # Load configuration
 try:
@@ -50,7 +49,6 @@ except json.JSONDecodeError as e:
     logging.error(f"Error decoding regions.json: {e}")
     exit()
 
-MINIMUM_CHESTS = config["minimum_chests"]
 DELAY = config["delay"]
 START_KEYBIND = config["start_keybind"]
 KILL_KEYBIND = config["kill_keybind"]
@@ -64,9 +62,10 @@ def getChests(quest_number):
     bbox_map = {
         1: (regions["regions"]["quest1"]),
         2: (regions["regions"]["quest2"]),
-        3: (regions["regions"]["quest3"])
+        3: (regions["regions"]["quest3"]),
+        4: (regions["regions"]["quest4"]) if "quest4" in regions["regions"] else None
     }
-    if quest_number not in bbox_map:
+    if quest_number not in bbox_map or not bbox_map[quest_number]:
         return ["0"]
     
     bbox = bbox_map[quest_number]
@@ -80,24 +79,29 @@ def getChests(quest_number):
     cv2.imwrite(filename, thresh)
 
     try:
-        OCR_result = reader.readtext(filename, detail=0, width_ths=1, text_threshold=0.6)
+        OCR_result = pytesseract.image_to_string(thresh)
         logging.info(f"Successfully read quest {quest_number} content: {OCR_result}")
-        filtered = [re.search(r'\d+', item).group() for item in OCR_result if "Chest" in item]
+        chest_type = config["chest_type"][f"quest{quest_number}"]
+        filtered = [re.search(r'(\d+)', item).group(1) for item in OCR_result.split('\n') if chest_type.lower() in item.lower()]
     except Exception as e:
         logging.error(f"Error reading quest {quest_number} content: {e}")
         filtered = ["0"]
 
-    filtered = filtered if filtered else ["0"]
-    logging.info(f"Found {filtered[0]} chests in quest {quest_number}")
+    if not filtered:
+        filtered = ["0"]
+        
+    logging.info(f"Filtered result for quest {quest_number}: {filtered}")
+    logging.info(f"Found {filtered[0]} {config['chest_type'][f'quest{quest_number}']} in quest {quest_number}")
     return filtered
 
 def reroll(quest_number):
     coordinates = {
         1: (regions["buttons"]["reroll1"]),
         2: (regions["buttons"]["reroll2"]),
-        3: (regions["buttons"]["reroll3"])
+        3: (regions["buttons"]["reroll3"]),
+        4: (regions["buttons"]["reroll4"]) if "reroll4" in regions["buttons"] else None
     }
-    if quest_number not in coordinates:
+    if quest_number not in coordinates or not coordinates[quest_number]:
         return
     
     x, y = coordinates[quest_number]
@@ -114,8 +118,21 @@ def main_loop():
         time.sleep(0.001)
         if keyboard.is_pressed(START_KEYBIND):
             time.sleep(0.2)
-            for quest_number in range(1, 4):
-                while int(getChests(quest_number)[0]) < MINIMUM_CHESTS:
+            for quest_number in range(1, 5):
+                if not regions["regions"].get(f"quest{quest_number}"):
+                    if quest_number == 4:
+                        logging.info("No fourth Quest Selected")
+                    else:
+                        logging.info(f"Quest {quest_number} region not defined. Skipping.")
+                    continue
+                while True:
+                    chest_count = int(getChests(quest_number)[0])
+                    if chest_count >= config["minimum_chests"][f"quest{quest_number}"]:
+                        logging.info(f"Quest {quest_number} has enough chests: {chest_count}")
+                        break
+                    if quest_number == 4 and not getChests(quest_number)[0].isdigit():
+                        logging.info("No text detected for quest 4, stopping reroll attempts.")
+                        break
                     reroll(quest_number)
                     time.sleep(DELAY)
 
@@ -132,6 +149,7 @@ def cleanup():
         os.remove("quest1.png")
         os.remove("quest2.png")
         os.remove("quest3.png")
+        os.remove("quest4.png")
     except FileNotFoundError:
         pass
     logging.info("Exiting...")
