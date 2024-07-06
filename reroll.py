@@ -1,4 +1,3 @@
-import ctypes
 import pytesseract
 import re
 import time
@@ -25,8 +24,8 @@ file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(mes
 logging.getLogger().addHandler(file_handler)
 
 # Configure pytesseract
-# Comment out the line below if tesseract is in the PATH
-# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# Update the path below to the path where Tesseract is installed
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 # Load configuration
 try:
@@ -58,12 +57,20 @@ logging.info("Regions loaded: {}".format(regions))
 
 running = True
 
+def preprocess_image(image_path):
+    image = cv2.imread(image_path, cv2.IMREAD_COLOR)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray = cv2.resize(gray, None, fx=2, fy=2, interpolation=cv2.INTER_LINEAR)
+    gray = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+    return gray
+
 def getChests(quest_number):
     bbox_map = {
         1: (regions["regions"]["quest1"]),
         2: (regions["regions"]["quest2"]),
         3: (regions["regions"]["quest3"]),
-        4: (regions["regions"]["quest4"]) if "quest4" in regions["regions"] else None
+        4: (regions["regions"]["quest4"]),
+        5: (regions["regions"]["quest5"]) if "quest5" in regions["regions"] else None
     }
     if quest_number not in bbox_map or not bbox_map[quest_number]:
         return ["0"]
@@ -79,7 +86,7 @@ def getChests(quest_number):
     cv2.imwrite(filename, thresh)
 
     try:
-        OCR_result = pytesseract.image_to_string(thresh)
+        OCR_result = pytesseract.image_to_string(thresh, lang='eng')  # Update 'eng' if using a different language pack
         logging.info(f"Successfully read quest {quest_number} content: {OCR_result}")
         chest_type = config["chest_type"][f"quest{quest_number}"]
         filtered = [re.search(r'(\d+)', item).group(1) for item in OCR_result.split('\n') if chest_type.lower() in item.lower()]
@@ -99,7 +106,8 @@ def reroll(quest_number):
         1: (regions["buttons"]["reroll1"]),
         2: (regions["buttons"]["reroll2"]),
         3: (regions["buttons"]["reroll3"]),
-        4: (regions["buttons"]["reroll4"]) if "reroll4" in regions["buttons"] else None
+        4: (regions["buttons"]["reroll4"]),
+        5: (regions["buttons"]["reroll5"]) if "reroll5" in regions["buttons"] else None
     }
     if quest_number not in coordinates or not coordinates[quest_number]:
         return
@@ -118,21 +126,21 @@ def main_loop():
         time.sleep(0.001)
         if keyboard.is_pressed(START_KEYBIND):
             time.sleep(0.2)
-            for quest_number in range(1, 5):
+            for quest_number in range(1, 6):
                 if not regions["regions"].get(f"quest{quest_number}"):
-                    if quest_number == 4:
-                        logging.info("No fourth Quest Selected")
+                    if quest_number == 5:
+                        logging.info("No fifth Quest Selected")
                     else:
                         logging.info(f"Quest {quest_number} region not defined. Skipping.")
                     continue
                 
                 while True:
                     chest_counts = getChests(quest_number)
-                    if quest_number == 4 and chest_counts[0] == "0":
-                        logging.info("No text detected for quest 4, stopping reroll attempts.")
+                    if quest_number == 5 and chest_counts[0] == "0":
+                        logging.info("No text detected for quest 5, stopping reroll attempts.")
                         break
-                    if quest_number == 4 and not any(c.isdigit() for c in chest_counts[0]):
-                        logging.info("No text detected at all for quest 4, stopping reroll attempts.")
+                    if quest_number == 5 and not any(c.isdigit() for c in chest_counts[0]):
+                        logging.info("No text detected at all for quest 5, stopping reroll attempts.")
                         break
                     if not chest_counts[0].isdigit():
                         break
@@ -153,12 +161,15 @@ def killswitch():
 def cleanup():
     logging.info("Cleaning up temporary files...")
     try:
-        os.remove("quest1.png")
-        os.remove("quest2.png")
-        os.remove("quest3.png")
-        os.remove("quest4.png")
-    except FileNotFoundError:
-        pass
+        time.sleep(1)  # Adding delay before attempting to delete files
+        for quest_number in range(1, 6):
+            filename = f"quest{quest_number}.png"
+            if os.path.exists(filename):
+                os.remove(filename)
+                logging.info(f"Deleted {filename}")
+    except Exception as e:
+        logging.error(f"Error cleaning up temporary files: {e}")
+    
     logging.info("Exiting...")
 
 if __name__ == "__main__":
