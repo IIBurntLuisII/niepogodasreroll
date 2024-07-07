@@ -1,17 +1,19 @@
 {
     "minimum_chests": {
-        "quest1": 1,
-        "quest2": 1,
-        "quest3": 1,
-        "quest4": 10
+        "quest1": 20,
+        "quest2": 20,
+        "quest3": 20,
+        "quest4": 8,
+        "quest5": 125
     },
     "chest_type": {
-        "quest1": "diamond chest",
-        "quest2": "diamond chest",
-        "quest3": "diamond chest",
-        "quest4": "platinum chest"
+        "quest1": "seer chest",
+        "quest2": "seer chest",
+        "quest3": "seer chest",
+        "quest4": "seer chest",
+        "quest5": "Platinum Chest"
     },
-    "delay": 0.2,
+    "delay": 0,
     "start_keybind": "F2",
     "kill_keybind": "F3"
 }
